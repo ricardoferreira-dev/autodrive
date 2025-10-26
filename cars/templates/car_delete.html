@@ -1,0 +1,368 @@
+{% extends "base.html" %} {% block title %}Deletar Carro - RF AutoDrive{% endblock%} {% block content %}
+
+<style>
+  /* Delete Container */
+  .delete-container {
+    max-width: 600px;
+    margin: 60px auto;
+  }
+
+  /* Back Button */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    background: rgba(255, 107, 53, 0.1);
+    transform: translateX(-5px);
+  }
+
+  /* Delete Card */
+  .delete-card {
+    background: linear-gradient(145deg, #1f1f1f, #1a1a1a);
+    border: 2px solid rgba(220, 38, 38, 0.4);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(220, 38, 38, 0.3);
+  }
+
+  /* Warning Header */
+  .delete-header {
+    background: linear-gradient(
+      135deg,
+      rgba(220, 38, 38, 0.2),
+      rgba(153, 27, 27, 0.2)
+    );
+    padding: 40px 30px;
+    text-align: center;
+    border-bottom: 2px solid rgba(220, 38, 38, 0.3);
+  }
+
+  .delete-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+    animation: pulse 2s infinite;
+  }
+
+  .delete-icon i {
+    font-size: 2.5rem;
+    color: var(--text-color);
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 12px 35px rgba(220, 38, 38, 0.6);
+    }
+  }
+
+  .delete-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin-bottom: 10px;
+  }
+
+  .delete-subtitle {
+    color: var(--text-light);
+    font-size: 1rem;
+  }
+
+  /* Delete Body */
+  .delete-body {
+    padding: 40px 30px;
+  }
+
+  .confirmation-message {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  .confirmation-message p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .car-info-box {
+    background: rgba(220, 38, 38, 0.1);
+    border: 2px solid rgba(220, 38, 38, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+    text-align: center;
+  }
+
+  .car-info-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .car-info-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .car-info-value i {
+    color: #ef4444;
+  }
+
+  /* Warning List */
+  .warning-list {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+  }
+
+  .warning-list-title {
+    color: #ef4444;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .warning-list-title i {
+    font-size: 1.2rem;
+  }
+
+  .warning-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .warning-list li {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+  }
+
+  .warning-list li::before {
+    content: "•";
+    color: #ef4444;
+    font-weight: bold;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 2px;
+  }
+
+  /* Action Buttons */
+  .delete-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 2px solid rgba(220, 38, 38, 0.2);
+  }
+
+  .btn {
+    flex: 1;
+    padding: 18px 30px;
+    font-size: 17px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .btn-delete {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    color: var(--text-color);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+  }
+
+  .btn-delete:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(220, 38, 38, 0.6);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+  }
+
+  .btn-delete:active {
+    transform: translateY(-1px);
+  }
+
+  .btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    box-shadow: none;
+  }
+
+  .btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+  }
+
+  /* Confirmation Checkbox (optional enhancement) */
+  .confirm-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 25px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+  }
+
+  .confirm-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #ef4444;
+  }
+
+  .confirm-checkbox label {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .delete-container {
+      margin: 30px auto;
+    }
+
+    .delete-header {
+      padding: 30px 20px;
+    }
+
+    .delete-icon {
+      width: 70px;
+      height: 70px;
+    }
+
+    .delete-icon i {
+      font-size: 2rem;
+    }
+
+    .delete-title {
+      font-size: 1.6rem;
+    }
+
+    .delete-body {
+      padding: 25px 20px;
+    }
+
+    .car-info-value {
+      font-size: 1.4rem;
+    }
+
+    .delete-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="delete-container">
+  <a href="{% url 'car_detail' pk=object.pk %}" class="back-link">
+    <i class="fas fa-arrow-left"></i>
+    <span>Voltar aos detalhes</span>
+  </a>
+
+  <div class="delete-card">
+    <!-- Warning Header -->
+    <div class="delete-header">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h1 class="delete-title">Ação Irreversível</h1>
+      <p class="delete-subtitle">Esta operação não pode ser desfeita</p>
+    </div>
+
+    <!-- Delete Body -->
+    <div class="delete-body">
+      <div class="confirmation-message">
+        <p>Tem certeza que deseja deletar o carro?</p>
+      </div>
+
+      <!-- Car Info Box -->
+      <div class="car-info-box">
+        <div class="car-info-label">Carro a ser deletado</div>
+        <div class="car-info-value">
+          <i class="fas fa-car"></i>
+          <strong>{{ object.brand }} {{ object.model }}</strong>
+        </div>
+      </div>
+
+      <!-- Warning List -->
+      <div class="warning-list">
+        <div class="warning-list-title">
+          <i class="fas fa-shield-alt"></i>
+          <span>O que será perdido:</span>
+        </div>
+        <ul>
+          <li>Todas as informações do veículo</li>
+          <li>Fotos e imagens associadas</li>
+          <li>Histórico de edições</li>
+          <li>Esta ação é permanente e não pode ser desfeita</li>
+        </ul>
+      </div>
+
+      <!-- Form -->
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="delete-actions">
+          <button type="submit" class="btn btn-delete">
+            <i class="fas fa-trash-alt"></i>
+            <span>Sim, Deletar Permanentemente</span>
+          </button>
+          <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-cancel">
+            <i class="fas fa-times"></i>
+            <span>Não, Manter Carro</span>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

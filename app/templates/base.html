@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}RF AutoDrive{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #ff6b35;
+        --primary-dark: #e85d2a;
+        --primary-light: #ff8c5f;
+        --secondary-color: #ffd700;
+        --bg-dark: #0a0a0a;
+        --bg-card: #1a1a1a;
+        --bg-hover: #252525;
+        --text-color: #ffffff;
+        --text-light: #b3b3b3;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5),
+          0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.7),
+          0 10px 10px -5px rgba(0, 0, 0, 0.5);
+        --glow: 0 0 20px rgba(255, 107, 53, 0.5);
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0a0a0a 0%,
+          #1a1a1a 50%,
+          #0f0f0f 100%
+        );
+        background-attachment: fixed;
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header & Navigation */
+      header {
+        background: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-lg);
+        border-bottom: 2px solid var(--primary-color);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
+      }
+
+      .logo i {
+        font-size: 32px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      nav ul li {
+        position: relative;
+      }
+
+      nav ul li a,
+      nav ul li span {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid transparent;
+      }
+
+      nav ul li a:hover {
+        background: var(--bg-hover);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: var(--glow);
+      }
+
+      nav ul li.user-greeting {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--primary-dark) 100%
+        );
+        color: var(--text-color);
+        padding: 10px 18px;
+        border-radius: 25px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--glow);
+      }
+
+      nav ul li.user-greeting i {
+        font-size: 18px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        color: var(--text-color) !important;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        box-shadow: var(--glow);
+        transform: translateY(-3px);
+        background: linear-gradient(
+          135deg,
+          var(--primary-light),
+          var(--primary-color)
+        );
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, var(--secondary-color), #ffed4e);
+        color: #000 !important;
+        font-weight: 600;
+        border: 1px solid var(--secondary-color);
+      }
+
+      .btn-secondary:hover {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      }
+
+      .btn-logout {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        color: var(--text-color) !important;
+        border: 1px solid #dc2626;
+      }
+
+      .btn-logout:hover {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+      }
+
+      /* Main Content */
+      main {
+        flex: 1;
+        max-width: 1200px;
+        width: 100%;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Content Container */
+      .content-wrapper {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        min-height: 400px;
+      }
+
+      /* Footer */
+      footer {
+        background: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 30px 20px;
+        margin-top: auto;
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.5);
+        border-top: 2px solid var(--primary-color);
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .footer-left {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .footer-left h3 {
+        font-size: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+      }
+
+      .footer-left p {
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      .footer-right {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--primary-color);
+      }
+
+      .social-link:hover {
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: var(--glow);
+        background: linear-gradient(
+          135deg,
+          var(--primary-light),
+          var(--primary-color)
+        );
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid rgba(255, 107, 53, 0.2);
+        color: var(--text-light);
+        font-size: 14px;
+      }
+
+      .footer-bottom i {
+        color: var(--primary-color);
+        animation: heartbeat 1.5s ease-in-out infinite;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        25% {
+          transform: scale(1.2);
+        }
+        50% {
+          transform: scale(1);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          height: auto;
+          padding: 15px 20px;
+        }
+
+        nav ul {
+          flex-wrap: wrap;
+          justify-content: center;
+          margin-top: 15px;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .content-wrapper {
+          padding: 25px;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        nav ul li.user-greeting {
+          order: -1;
+          margin-bottom: 10px;
+        }
+      }
+
+      /* Animações */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      main {
+        animation: fadeIn 0.6s ease;
+      }
+
+      /* Messages/Alerts styling */
+      .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: fadeIn 0.4s ease;
+        border-left: 4px solid;
+      }
+
+      .alert-success {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border-color: #22c55e;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border-color: #ef4444;
+      }
+
+      .alert-info {
+        background: rgba(255, 107, 53, 0.15);
+        color: var(--primary-light);
+        border-color: var(--primary-color);
+      }
+
+      /* Efeito de brilho no scroll */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-dark);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+          180deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        border-radius: 10px;
+        border: 2px solid var(--bg-dark);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(
+          180deg,
+          var(--primary-light),
+          var(--primary-color)
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="{% url 'cars_list' %}" class="logo">
+          <i class="fas fa-car-side"></i>
+          <span>RF AutoDrive</span>
+        </a>
+
+        <ul>
+          {% if user.is_authenticated %}
+          <li class="user-greeting">
+            <i class="fas fa-user-circle"></i>
+            <span>{{ user.username }}</span>
+          </li>
+          <li>
+            <a href="{% url 'new_car' %}" class="btn-primary">
+              <i class="fas fa-plus-circle"></i>
+              Cadastrar Carro
+            </a>
+          </li>
+          {% endif %} {% if not user.is_authenticated %}
+          <li>
+            <a href="{% url 'register' %}">
+              <i class="fas fa-user-plus"></i>
+              Cadastre-se
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'login' %}" class="btn-secondary">
+              <i class="fas fa-sign-in-alt"></i>
+              Login
+            </a>
+          </li>
+          {% endif %}
+
+          <li>
+            <a href="{% url 'cars_list' %}">
+              <i class="fas fa-list"></i>
+              Carros
+            </a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'logout' %}" class="btn-logout">
+              <i class="fas fa-sign-out-alt"></i>
+              Sair
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="content-wrapper">{% block content %}{% endblock %}</div>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fas fa-car-side"></i> RF AutoDrive</h3>
+          <p>Encontre seu carro dos sonhos</p>
+          <p>&copy; 2025 Ricardo Ferreira | Python & Django Developer</p>
+        </div>
+
+        <div class="footer-right">
+          <a
+            href="https://github.com/ricardoferreira-dev"
+            class="social-link"
+            target="_blank"
+            title="GitHub"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ricardferreiradev/"
+            class="social-link"
+            target="_blank"
+            title="LinkedIn"
+          >
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a
+            href="mailto:ricardferreira.dev@gmail.com"
+            class="social-link"
+            title="Email"
+          >
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Desenvolvido usando Django & Python</p>
+      </div>
+    </footer>
+  </body>
+</html>
