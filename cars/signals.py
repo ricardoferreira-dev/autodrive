@@ -10,6 +10,10 @@ def car_inventory_update():
     cars_value = Car.objects.aggregate(
         total_value=Sum('value')
     )['total_value']
+
+    if cars_value is None:
+        cars_value = 0
+
     CarInventory.objects.create(
         cars_count=cars_count,
         cars_value=cars_value
